@@ -14,8 +14,14 @@ eventHandler {
     eventHandler<Trade>(name = "TRADE_INSERT") {
         schemaValidation = false
         onCommit { event ->
-            entityDb.insert(event.details)
-            ack()
+            val trade = event.details
+
+            if (trade.quantity!! > 0) {
+                entityDb.insert(event.details)
+                ack()
+            } else {
+                nack("Quantity must be positive")
+            }
         }
     }
 
