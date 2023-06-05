@@ -12,7 +12,7 @@ import javax.xml.bind.PrintConversionEvent
  */
 
 dataServer {
-    query("ALL_TRADES", TRADE)
+    query("ALL_TRADES", TRADE_VIEW)
     query("ALL_PRICES", TRADE){
         fields{
             PRICE
@@ -20,4 +20,6 @@ dataServer {
         }
         where { trade -> trade.price > 0.0 }
     }
+    query("ALL_INSTRUMENTS", INSTRUMENT)
+    query("ALL_COUNTERPARTIES", COUNTERPARTY)
 }
