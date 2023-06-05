@@ -12,7 +12,7 @@ import javax.xml.bind.PrintConversionEvent
  */
 
 dataServer {
-    query("ALL_TRADES", TRADE_VIEW)
+    query("ALL_TRADES", TRADE)
     query("ALL_PRICES", TRADE){
         fields{
             PRICE
