@@ -17,4 +17,17 @@ fields {
     field("SYMBOL", type = STRING)
     field("DIRECTION", type = ENUM("BUY", "SELL", default = "BUY"))
 
+    field("COUNTERPARTY_ID", type = STRING)
+    field("COUNTERPARTY_NAME", type = STRING)
+    field("ENABLED", type = BOOLEAN)
+    field("COUNTERPARTY_LEI", type = STRING)
+
+    field("INSTRUMENT_ID", type = STRING)
+    field("INSTRUMENT_NAME", type = STRING)
+    field("MARKET_ID", type = STRING)
+    field("COUNTRY_CODE", type = STRING)
+    field("CURRENCY_ID", type = STRING)
+    field("ASSET_CLASS", type = STRING)
+
+
 }
