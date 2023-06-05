@@ -40,6 +40,7 @@ eventHandler {
     }
 
     eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
+        schemaValidation = false
         onCommit { event ->
             entityDb.insert(event.details)
             ack()
@@ -61,6 +62,7 @@ eventHandler {
     }
 
     eventHandler<Instrument>(name = "INSTRUMENT_INSERT") {
+        schemaValidation = false
         onCommit { event ->
             entityDb.insert(event.details)
             ack()
