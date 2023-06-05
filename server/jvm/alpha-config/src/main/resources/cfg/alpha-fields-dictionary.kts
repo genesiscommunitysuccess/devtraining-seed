@@ -11,4 +11,10 @@
 
 fields {
 
+    field("TRADE_ID", type = STRING)
+    field("QUANTITY", type = INT)
+    field("PRICE", type = DOUBLE)
+    field("SYMBOL", type = STRING)
+    field("DIRECTION", type = ENUM("BUY", "SELL", default = "BUY"))
+
 }

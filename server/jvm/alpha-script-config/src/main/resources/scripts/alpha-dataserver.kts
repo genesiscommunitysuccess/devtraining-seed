@@ -1,3 +1,5 @@
+import javax.xml.bind.PrintConversionEvent
+
 /**
  * System              : Genesis Business Library
  * Sub-System          : multi-pro-code-test Configuration
@@ -8,6 +10,14 @@
  *
  * Modification History
  */
-dataServer {
 
+dataServer {
+    query("ALL_TRADES", TRADE)
+    query("ALL_PRICES", TRADE){
+        fields{
+            PRICE
+            SYMBOL
+        }
+        where { trade -> trade.price > 0.0 }
+    }
 }
