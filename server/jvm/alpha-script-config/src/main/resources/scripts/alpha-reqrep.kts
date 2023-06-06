@@ -9,5 +9,11 @@
  * Modification History
  */
 requestReplies {
-
+    requestReply("TRADE", TRADE_VIEW) {
+        permissioning {
+            auth(mapName = "ENTITY_VISIBILITY") {
+                TRADE_VIEW.COUNTERPARTY_ID
+            }
+        }
+    }
 }

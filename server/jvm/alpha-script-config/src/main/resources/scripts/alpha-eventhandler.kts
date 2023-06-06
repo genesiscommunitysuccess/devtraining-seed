@@ -27,26 +27,23 @@ eventHandler {
     val stateMachine = inject<TradeStateMachine>()
 
     eventHandler<Trade>(name = "TRADE_INSERT") {
-        schemaValidation = false
+        permissions {
+            auth(mapName = "ENTITY_VISIBILITY") {
+                field { counterpartyId }
+            }
+        }
         onValidate { event ->
             val message = event.details
             verify {
-                entityDb hasEntry Counterparty.byId(message.counterpartyId.toString())
-                entityDb hasEntry Instrument.byId(message.instrumentId.toString())
+                entityDb hasEntry Counterparty.ById(message.counterpartyId)
+                entityDb hasEntry Instrument.ById(message.instrumentId)
             }
             ack()
         }
         onCommit { event ->
             val trade = event.details
-
-            if (trade.quantity!! > 0) {
-                trade.enteredBy = event.userName
-                stateMachine.insert(entityDb, trade)
-                ack()
-            }
-            else {
-                nack("Quantity must be positive")
-            }
+            stateMachine.insert(trade)
+            ack()
         }
     }
 
