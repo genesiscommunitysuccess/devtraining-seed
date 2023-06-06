@@ -35,8 +35,8 @@ eventHandler {
         onValidate { event ->
             val message = event.details
             verify {
-                entityDb hasEntry Counterparty.ById(message.counterpartyId)
-                entityDb hasEntry Instrument.ById(message.instrumentId)
+                entityDb hasEntry Counterparty.ById(message.counterpartyId.toString())
+                entityDb hasEntry Instrument.ById(message.instrumentId.toString())
             }
             ack()
         }
