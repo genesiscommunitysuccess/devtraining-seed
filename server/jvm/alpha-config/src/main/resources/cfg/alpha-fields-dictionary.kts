@@ -29,5 +29,14 @@ fields {
     field("CURRENCY_ID", type = STRING)
     field("ASSET_CLASS", type = STRING)
 
+    field("TRADE_DATE", type = DATE)
+    field("ENTERED_BY", type = STRING)
+    field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
+
+    field("POSITION_ID", type = STRING)
+    field("NOTIONAL", type = DOUBLE)
+    field("LAST_PRICE", type = DOUBLE)
+    field("VALUE", type = DOUBLE)
+    field("PNL", type = DOUBLE)
 
 }
