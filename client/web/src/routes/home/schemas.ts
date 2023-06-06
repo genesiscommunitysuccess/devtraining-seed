@@ -49,26 +49,6 @@ export const tradeFormSchema = (editing?: boolean) => ({
         "type": "Control",
         "label": "Quantity",
         "scope": "#/properties/QUANTITY"
-    },
-    {
-        "type": "Control",
-        "label": "Symbol",
-        "scope": "#/properties/SYMBOL"
-    },
-    {
-        "type": "Control",
-        "label": "Trade Date",
-        "scope": "#/properties/TRADE_DATE"
-    },
-    {
-        "type": "Control",
-        "label": "Status",
-        "scope": "#/properties/TRADE_STATUS"
-    },
-    {
-        "type": "Control",
-        "label": "Entered By",
-        "scope": "#/properties/ENTERED_BY"
     }
   ],
 });
