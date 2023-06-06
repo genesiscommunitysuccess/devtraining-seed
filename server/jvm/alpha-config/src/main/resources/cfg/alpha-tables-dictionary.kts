@@ -11,7 +11,7 @@
 
 tables {
 
-    table (name = "TRADE", id = 2000) {
+    table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
         sequence(TRADE_ID, "TR")
         COUNTERPARTY_ID
         INSTRUMENT_ID not null

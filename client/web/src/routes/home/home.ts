@@ -1,14 +1,15 @@
 import {customElement, FASTElement, observable} from '@microsoft/fast-element';
+import {HomeTemplate as template} from './home.template';
+import {HomeStyles as styles} from './home.styles';
 import {EntityManagement} from '@genesislcap/foundation-entity-management';
-import { HomeTemplate as template } from './home.template';
-import { HomeStyles as styles } from './home.styles';
 import {ZeroGridPro} from '@genesislcap/foundation-zero-grid-pro';
 import {Connect} from '@genesislcap/foundation-comms';
 
-EntityManagement;
+EntityManagement; //imported from '@genesislcap/foundation-entity-management' to display Trade grid
 
 const name = 'home-route';
 
+//describes the default config for the grid columns
 const defaultColumnConfig = {
   enableCellChangeFlash: true,
   enableRowGroup: true,
@@ -16,6 +17,7 @@ const defaultColumnConfig = {
   enableValue: true,
 };
 
+//grid columns that will be showed
 const COLUMNS = [
   {
     ...defaultColumnConfig,
@@ -55,9 +57,12 @@ const COLUMNS = [
   styles,
 })
 export class Home extends FASTElement {
-    @observable columns: any = COLUMNS;
-    public positionsGrid!: ZeroGridPro;
-    @Connect connection: Connect;
+  @observable columns: any = COLUMNS;
+
+  public positionsGrid!: ZeroGridPro;
+
+  @Connect connection: Connect;
+
   constructor() {
     super();
   }

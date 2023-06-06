@@ -3,7 +3,6 @@ import type {Home} from './home';
 import { tradeFormCreateSchema, tradeFormUpdateSchema } from './schemas';
 
 export const positionsColumnDefs: any[] = [
-    {field: 'POSITION_ID', headerName: 'Id'},
     {field: 'INSTRUMENT_ID', headerName: 'Instrument'},
     {field: 'QUANTITY', headerName: 'Quantity'},
     {field: 'NOTIONAL', headerName: 'Notional'},

@@ -29,12 +29,6 @@ class TradeStateMachine @Inject constructor(
                 }
             }
 
-            onCommit { trade ->
-                if (trade.enteredBy == "TestUser") {
-                    trade.price = 10.0
-                }
-            }
-
             transition(TradeStatus.ALLOCATED, TradeEffect.Allocated)
             transition(TradeStatus.CANCELLED, TradeEffect.Cancelled)
         }
@@ -42,12 +36,13 @@ class TradeStateMachine @Inject constructor(
         state(TradeStatus.ALLOCATED) {
             isMutable = false
 
-            transition(TradeStatus.NEW, TradeEffect.Cancelled)
+            transition(TradeStatus.NEW, TradeEffect.New)
             transition(TradeStatus.CANCELLED, TradeEffect.Cancelled)
         }
 
         state(TradeStatus.CANCELLED) {
             isMutable = false
+
             onCommit { trade ->
                 trade.enteredBy = ""
             }
@@ -56,10 +51,36 @@ class TradeStateMachine @Inject constructor(
 
     suspend fun insert(trade: Trade): Transition<Trade, TradeStatus, TradeEffect> = internalState.create(trade)
 
+    suspend fun insert(
+        transaction: AsyncMultiEntityReadWriteGenericSupport,
+        trade: Trade,
+    ): Transition<Trade, TradeStatus, TradeEffect> =
+        internalState.withTransaction(transaction) {
+            create(trade)
+        }
+
     suspend fun modify(tradeId: String, modify: suspend (Trade) -> Unit): Transition<Trade, TradeStatus, TradeEffect>? =
         internalState.update(Trade.ById(tradeId)) { trade, _ -> modify(trade) }
 
     suspend fun modify(trade: Trade): Transition<Trade, TradeStatus, TradeEffect>? = internalState.update(trade)
+
+    suspend fun modify(
+        transaction: AsyncMultiEntityReadWriteGenericSupport,
+        tradeId: String, modify: suspend (Trade) -> Unit
+    ): Transition<Trade, TradeStatus, TradeEffect>? =
+        internalState.withTransaction(transaction) {
+            update(Trade.ById(tradeId)) {
+                    trade, _ -> modify(trade)
+            }
+        }
+
+    suspend fun modify(
+        transaction: AsyncMultiEntityReadWriteGenericSupport,
+        trade: Trade
+    ): Transition<Trade, TradeStatus, TradeEffect>? =
+        internalState.withTransaction(transaction) {
+            update(trade)
+        }
 }
 
 sealed class TradeEffect {
