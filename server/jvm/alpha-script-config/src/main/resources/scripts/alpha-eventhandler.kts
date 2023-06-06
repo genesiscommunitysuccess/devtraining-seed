@@ -8,8 +8,19 @@
  *
  * Modification History
  */
+import java.io.File
+import java.time.LocalDate
+import global.genesis.TradeStateMachine
+import global.genesis.gen.dao.Trade
+import global.genesis.alpha.message.event.TradeAllocated
+import global.genesis.alpha.message.event.TradeCancelled
+import global.genesis.commons.standards.GenesisPaths
+import global.genesis.gen.view.repository.TradeViewAsyncRepository
+import global.genesis.jackson.core.GenesisJacksonMapper
 
 eventHandler {
+
+    val stateMachine = inject<TradeStateMachine>()
 
     eventHandler<Trade>(name = "TRADE_INSERT") {
         schemaValidation = false
@@ -17,7 +28,8 @@ eventHandler {
             val trade = event.details
 
             if (trade.quantity!! > 0) {
-                entityDb.insert(event.details)
+                trade.enteredBy = event.userName
+                stateMachine.insert(trade)
                 ack()
             } else {
                 nack("Quantity must be positive")
@@ -25,16 +37,30 @@ eventHandler {
         }
     }
 
-    eventHandler<Trade>(name = "TRADE_MODIFY") {
+    eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
         onCommit { event ->
-            entityDb.modify(event.details)
+            val trade = event.details
+            stateMachine.modify(trade)
             ack()
         }
     }
 
-    eventHandler<Trade>(name = "TRADE_DELETE") {
+    eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
         onCommit { event ->
-            entityDb.delete(event.details)
+            val message = event.details
+            stateMachine.modify(message.tradeId) { trade ->
+                trade.tradeStatus = TradeStatus.CANCELLED
+            }
+            ack()
+        }
+    }
+
+    eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
+        onCommit { event ->
+            val message = event.details
+            stateMachine.modify(message.tradeId) { trade ->
+                trade.tradeStatus = TradeStatus.ALLOCATED
+            }
             ack()
         }
     }
