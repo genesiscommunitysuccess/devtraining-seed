@@ -2,6 +2,8 @@ import {customElement, FASTElement, observable} from '@microsoft/fast-element';
 import {EntityManagement} from '@genesislcap/foundation-entity-management';
 import { HomeTemplate as template } from './home.template';
 import { HomeStyles as styles } from './home.styles';
+import {ZeroGridPro} from '@genesislcap/foundation-zero-grid-pro';
+import {Connect} from '@genesislcap/foundation-comms';
 
 EntityManagement;
 
@@ -48,7 +50,9 @@ const COLUMNS = [
   styles,
 })
 export class Home extends FASTElement {
-@observable columns: any = COLUMNS;
+    @observable columns: any = COLUMNS;
+    public positionsGrid!: ZeroGridPro;
+    @Connect connection: Connect;
   constructor() {
     super();
   }
