@@ -24,6 +24,14 @@ eventHandler {
 
     eventHandler<Trade>(name = "TRADE_INSERT") {
         schemaValidation = false
+        onValidate { event ->
+            val message = event.details
+            verify {
+                entityDb hasEntry Counterparty.ById(message.counterpartyId.toString())
+                entityDb hasEntry Instrument.byId(message.instrumentId.toString())
+            }
+            ack()
+        }
         onCommit { event ->
             val trade = event.details
 
@@ -38,6 +46,15 @@ eventHandler {
     }
 
     eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
+        onValidate { event ->
+            val message = event.details
+            verify {
+                entityDb hasEntry Counterparty.ById(message.counterpartyId.toString())
+                entityDb hasEntry Instrument.byId(message.instrumentId.toString())
+            }
+            ack()
+        }
+
         onCommit { event ->
             val trade = event.details
             stateMachine.modify(trade)
