@@ -4,12 +4,10 @@ import global.genesis.TradeStateMachine
 import global.genesis.gen.dao.Trade
 import global.genesis.alpha.message.event.TradeAllocated
 import global.genesis.alpha.message.event.TradeCancelled
+import global.genesis.alpha.message.event.PositionReport
 import global.genesis.commons.standards.GenesisPaths
 import global.genesis.gen.view.repository.TradeViewAsyncRepository
-import global.genesis.alpha.message.event.PositionReport
-import global.genesis.db.rx.entity.multi.AsyncEntityDb
-
-val tradeViewRepo = inject<TradeViewAsyncRepository>()
+import global.genesis.jackson.core.GenesisJacksonMapper
 
 /**
  * System              : Genesis Business Library
@@ -28,6 +26,7 @@ eventHandler {
 
     eventHandler<Trade>(name = "TRADE_INSERT") {
         schemaValidation = false
+        permissionCodes = listOf("INSERT_TRADE")
         onValidate { event ->
             val message = event.details
             verify {
@@ -127,7 +126,9 @@ eventHandler {
             ack()
         }
     }
+
     eventHandler<PositionReport> {
+        schemaValidation = false
         onCommit {
             val mapper = GenesisJacksonMapper.csvWriter<TradeView>()
             val today = LocalDate.now().toString()
