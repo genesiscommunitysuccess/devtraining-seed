@@ -10,7 +10,7 @@ systemDefinition {
         item(name = "MetricsEnabled", value = "false")
         item(name = "ZeroMQProxyInboundPort", value = "5001")
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres")
+        item(name = "DbHost", value = "jdbc:h2:file:~/alpha/server/h2/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE")
         item(name = "DbSqlMaxPoolSize", value = "4")
         item(name = "DbMode", value = "VANILLA")
         item(name = "GenesisNetProtocol", value = "V2")
